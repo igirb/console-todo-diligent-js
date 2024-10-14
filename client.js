@@ -12,4 +12,14 @@ async function addNewTodo() {
     console.log(`New Todo item added: ${newTodo.content}`);
 }
 
+async function deleteTodo() {
+    const todoId = prompt('Enter the ID of the todo to delete: ');
+    const response = await fetch(`http://localhost:3000/todos/${todoId}`, {
+        method: 'DELETE'
+    });
+    const message = await response.json();
+    console.log(message.message);
+}
+
 addNewTodo();
+deleteTodo();

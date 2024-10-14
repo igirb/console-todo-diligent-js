@@ -20,3 +20,22 @@ app.post('/todos', (req, res) => {
     res.status(201).json(newTodo);
 });
 
+app.delete('/todos/:id', (req, res) => {
+    const data = fs.readFileSync(PATH, 'utf8');
+    const todos = data ? JSON.parse(data) : [];
+
+    const todoId = parseInt(req.params.id);
+    const todoIndex = todos.findIndex(todo => todo.id === todoId);
+
+    if(todoIndex !== -1) {
+        todos.splice(todoIndex, 1);
+        fs.writeFileSync(PATH, JSON.stringify(todos, null, 2), 'utf8');
+        res.json({message: `Todo successfully deleted`});
+    } else {
+        res.status(404).json({ message: 'Todo not found! :(' });
+    }
+})
+
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
